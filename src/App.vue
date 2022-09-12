@@ -1,30 +1,60 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+   <div class="wrapper">
+      <header-block></header-block>
+      <div class="router">
+         <router-view></router-view>
+      </div>
+   </div>
 </template>
 
+<script>
+import HeaderBlock from '@/components/Header/HeaderBlock';
+
+import { mapActions } from 'vuex';
+
+export default {
+   components: {
+      HeaderBlock,
+   },
+   created() {
+      window.addEventListener('resize', this.handleResize);
+   },
+   mounted() {
+      setInterval(() => {
+         this.ibg();
+      }, 200);
+      this.handleResize();
+   },
+   unmounted() {
+      window.removeEventListener('resize', this.handleResize);
+   },
+   methods: {
+      ...mapActions(['MAKE_RESIZE_WIDTH', 'MAKE_RESIZE_HEIGHT']),
+      handleResize() {
+         this.MAKE_RESIZE_WIDTH();
+         this.MAKE_RESIZE_HEIGHT();
+      },
+      ibg() {
+         let ibg = document.querySelectorAll('.ibg');
+         for (let i = 0; i < ibg.length; i++) {
+            if (ibg[i].querySelector('img')) {
+               ibg[i].style.backgroundImage =
+                  'url(' +
+                  ibg[i].querySelector('img').getAttribute('src') +
+                  ')';
+            }
+         }
+      },
+   },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+@import '@/assets/styles/reset';
+@import '@/assets/styles/constants.scss';
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.router {
+   flex: 1 1 auto;
+   margin-top: 65px;
 }
 </style>

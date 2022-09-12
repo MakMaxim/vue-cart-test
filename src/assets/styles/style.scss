@@ -1,0 +1,89 @@
+@import '@/assets/styles/constants.scss';
+
+html {
+   height: 100%;
+   box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+   box-sizing: inherit;
+}
+body {
+   height: 100%;
+   font-family: 'Gilroy Regular';
+   font-size: 16px;
+   color: $mainColor;
+}
+
+a {
+   text-decoration: none;
+   color: $mainColor;
+}
+
+button {
+   border: none;
+   background-color: inherit;
+}
+
+h2 {
+   font-family: 'Gilroy Bold';
+   @include adaptiv-value('font-size', 40, 24, 1);
+   color: $mainColor;
+   line-height: 48/40 * 100%;
+   align-items: center;
+}
+
+.wrapper {
+   width: 100%;
+   min-height: 100%;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+}
+
+._container {
+   margin: 0 auto;
+   max-width: $maxWidthContainer + px;
+   padding: 0 15px;
+}
+
+.ibg {
+   background-position: center;
+   background-size: cover;
+   background-repeat: no-repeat;
+   position: relative;
+   img {
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      visibility: hidden;
+   }
+}
+
+.btn {
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   padding: 0 15px;
+   text-align: center;
+   transition: 0.3s;
+   font-family: 'Gilroy Semibold';
+   background-color: $orangeColor;
+   color: #fff;
+   line-height: 150%;
+   cursor: pointer;
+   &:hover {
+      background-color: $darkOrangeColor;
+   }
+}
+
+.title {
+   font-family: 'Gilroy Bold';
+   color: #000;
+   font-size: 24px;
+   line-height: 29/24 * 100%;
+}
