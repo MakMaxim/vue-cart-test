@@ -24,19 +24,21 @@
 
 <script>
 import CartItem from '@/components/PageCart/CartItem.vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
    components: {
       CartItem,
    },
    computed: {
-      ...mapGetters(['CART']),
+      ...mapGetters(['CART', 'DELETED']),
       cartTotalCost() {
          let result = [];
          if (this.CART.length) {
             for (let item of this.CART) {
-               result.push(+item.price.replace(/\./g, '') * item.quantity);
+               !this.DELETED.filter((elem) => elem.id === item.id).length
+                  ? result.push(+item.price.replace(/\./g, '') * item.quantity)
+                  : '';
             }
             result = result.reduce((sum, cur) => sum + cur, 0);
             return result
@@ -46,12 +48,6 @@ export default {
          } else {
             return 0;
          }
-      },
-   },
-   methods: {
-      ...mapActions(['DELETE_FROM_CART']),
-      deleteFromCart(i) {
-         this.DELETE_FROM_CART(i);
       },
    },
 };

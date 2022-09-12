@@ -11,8 +11,14 @@ export default {
    MAKE_RESIZE_HEIGHT({ commit }) {
       commit('RESIZE_HEIGHT');
    },
+   TOGGLE_RESTORE({ commit }, product) {
+      commit('TOGGLE_RESTORE', product);
+   },
    DELETE_FROM_CART({ commit }, i) {
       commit('REMOVE_FROM_CART', i);
+   },
+   DELETE_FROM_DELETED({ commit }, i) {
+      commit('REMOVE_FROM_DELETED', i);
    },
    INCREMENT_CART_ITEM({ commit }, i) {
       commit('INCREMENT', i);

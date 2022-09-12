@@ -1,6 +1,33 @@
 <template>
    <article class="cart__item cart-item">
-      <div class="cart-item__cart">
+      <div
+         class="cart-item__deleted deleted"
+         v-if="
+            DELETED.filter((elem) => elem.id === cart_item_data.id).length &&
+            !cart_item_data.restore
+         "
+      >
+         <div class="deleted__text">
+            product <span>{{ cart_item_data.title }}</span> removed from cart
+         </div>
+         <div
+            class="cart-item__deletebtn btn"
+            @click="
+               toggleRestore(cart_item_data),
+                  deleteFromDeleted(cart_item_data.id)
+            "
+         >
+            Restore
+         </div>
+      </div>
+
+      <div
+         class="cart-item__cart"
+         v-else-if="
+            !DELETED.filter((elem) => elem.id === cart_item_data.id).length ||
+            cart_item_data.restore
+         "
+      >
          <a href="#" class="cart-item__image">
             <img
                :src="
@@ -47,19 +74,12 @@
             </div>
             <div
                class="cart-item__deletebtn btn"
-               @click.prevent="deleteFromCart(), addToDeleted(cart_item_data)"
+               @click.prevent="deleteFromCart(cart_item_data)"
             >
                Delete
             </div>
          </div>
       </div>
-
-      <!-- <div class="cart-item__deleted deleted">
-         <div class="deleted__text">
-            product {{ cart_item_data.title }} removed from cart
-         </div>
-         <div class="cart-item__deletebtn btn">Reestablish</div>
-      </div> -->
    </article>
 </template>
 
@@ -76,13 +96,18 @@ export default {
       ...mapActions([
          'INCREMENT_CART_ITEM',
          'DECREMENT_CART_ITEM',
-         'ADD_TO_DELETED',
+         'DELETE_FROM_CART',
+         'TOGGLE_RESTORE',
+         'DELETE_FROM_DELETED',
       ]),
-      addToDeleted(data) {
-         this.ADD_TO_DELETED(data);
+      deleteFromCart(data) {
+         this.DELETE_FROM_CART(data);
       },
-      deleteFromCart() {
-         this.$emit('deleteFromCart');
+      deleteFromDeleted(i) {
+         this.DELETE_FROM_DELETED(i);
+      },
+      toggleRestore(data) {
+         this.TOGGLE_RESTORE(data);
       },
       increment(i) {
          this.INCREMENT_CART_ITEM(i);
@@ -94,8 +119,6 @@ export default {
    computed: {
       ...mapGetters(['DELETED', 'CART', 'PRODUCTS']),
    },
-
-   mounted() {},
 };
 </script>
 
@@ -242,5 +265,10 @@ export default {
    padding: 16px;
    margin-bottom: 16px;
    font-size: 20px;
+   &__text {
+      span {
+         font-family: 'Gilroy Bold';
+      }
+   }
 }
 </style>

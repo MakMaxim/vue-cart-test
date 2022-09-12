@@ -11,14 +11,13 @@ export default {
          if (!isProductExists) {
             state.cart.push(product);
             product.quantity++;
+            product.restore = false;
          }
       } else {
          state.cart.push(product);
          product.quantity++;
+         product.restore = false;
       }
-   },
-   SET_DELETED(state, product) {
-      state.deleted.push(product);
    },
    RESIZE_WIDTH(state) {
       state.width = window.innerWidth;
@@ -26,13 +25,24 @@ export default {
    RESIZE_HEIGHT(state) {
       state.height = window.innerHeight;
    },
-   REMOVE_FROM_CART(state, i) {
-      state.cart.map(function (item) {
-         if (item.id === state.cart[i].id) {
-            item.quantity = 0;
-         }
-      });
-      state.cart.splice(i, 1);
+   REMOVE_FROM_CART(state, product) {
+      if (
+         !state.deleted
+            .map((elem) => (elem.id == product.id ? 1 : ''))
+            .filter((el) => el !== '').length
+      ) {
+         state.deleted.push(product);
+      }
+      product.restore = false;
+   },
+   REMOVE_FROM_DELETED(state, i) {
+      let ind = state.deleted
+         .map((elem, index) => (elem.id === i ? index : ''))
+         .filter((el) => el !== '');
+      state.deleted.splice(ind, 1);
+   },
+   TOGGLE_RESTORE(state, product) {
+      product.restore = true;
    },
    INCREMENT(state, i) {
       state.cart.map(function (item) {

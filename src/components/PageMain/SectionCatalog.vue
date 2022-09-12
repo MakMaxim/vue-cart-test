@@ -2,7 +2,6 @@
    <section class="catalog">
       <div class="catalog__container _container">
          <h2 class="catalog__title">Our Products</h2>
-
          <div class="catalog__list">
             <transition-group name="list">
                <catalog-item
